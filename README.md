@@ -1,4 +1,4 @@
-# wanxin
+# For-form-er
 词形变化题生成（比赛）
 
 articles.txt放文章词库(配合爬虫食用更佳，编码格式请用utf8。）
