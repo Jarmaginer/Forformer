@@ -1,0 +1,5 @@
+play,played,playing,player
+interest,interesting,interested
+mod,modded,modder
+china,Chinese,chinese
+traditional,tradition
