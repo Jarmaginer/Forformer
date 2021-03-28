@@ -15,12 +15,20 @@ window.title("Forformer")
 window.geometry('1382x1047')
 library = None
 lines = None
+questionfile = None
 mainmenu = Menu(window)
 menuFile = Menu(mainmenu)
 
 def main():
     return None
 
+def exportquestion():
+    global questionfile
+    print(txt.get())
+    file0 = filedialog.askopenfilenames(initialdir=os.path.dirname(__file__))
+    questionfile = open("".join(file0),"r+",encoding='utf-8')
+    questionfile.write(txt.get())
+    questionfile.close
 
 def library():
     global library
@@ -40,6 +48,7 @@ def words():
 
 def getwordsfromtext():
     newlines = txtworld.get()
+
 
 
 def printquestion(lines,library):
@@ -115,6 +124,7 @@ btg.place(x=850,y=70)
 mainmenu.add_cascade(label="文件",menu=menuFile)
 menuFile.add_command(label="导入语料库",command=library)
 menuFile.add_command(label="导入单词",command=words)
+menuFile.add_command(label="导出题目",command=words)
 
 window.config(menu=mainmenu)
 window.bind('Button-3',popupmenu)
