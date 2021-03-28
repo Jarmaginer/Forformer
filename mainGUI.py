@@ -1,5 +1,6 @@
 import re
 import random
+import tkinter.ttk
 import tkinter
 from tkinter import filedialog,scrolledtext, messagebox
 from tkinter import *
@@ -14,7 +15,8 @@ window.title("Forformer")
 window.geometry('1382x1047')
 library = None
 lines = None
-
+mainmenu = Menu(window)
+menuFile = Menu(mainmenu)
 
 def main():
     return None
@@ -52,8 +54,10 @@ def printquestion(lines,library):
                 else:
                     selflist.append(eachline)
                     break
-
-            sentences = re.findall("[A-Z]{1}[^.]*.",library)  #分析所有语句
+            try:
+                sentences = re.findall("[A-Z]{1}[^.]*.",library)  #分析所有语句
+            except:
+                messagebox.showwarning('生成失败','句库发生错误')
             for i in selflist:
                 for sentence in sentences:
                     while True:
@@ -72,18 +76,25 @@ def printquestion(lines,library):
                             txt.insert(INSERT, str(n)+". "+bringquestion+"答案:"+bringanswer+"\n")
                             n+=1
 
-
+def popupmenu(event):
+     mainmenu.post(event.x_root,event.y_root)
 
 
 def process():
     global library
     global lines
+    global n
     if library == None:
-        messagebox.showerror('az','你的句库是不是还没导入？')
+        messagebox.showwarning('生成失败','你的句库是不是还没导入？')
     elif lines == None:
-        messagebox.showerror('az','你的词库是不是还没导入？')
+        messagebox.showwarning('生成失败','你的词库是不是还没导入？')
     else:
         printquestion(lines,library)
+        if n != 1:
+            messagebox.showinfo("生成完毕","共生成"+str(n)+"个题目")
+        else:
+            messagebox.showwarning("生成失败","未找到匹配项")
+
 
 
 txt = scrolledtext.ScrolledText(window, width=80, height=50)
@@ -101,8 +112,12 @@ btg.place(x=850,y=970)
 btg = Button(window, text="导入词库", command=words)
 btg.place(x=850,y=70)
 
+mainmenu.add_cascade(label="文件",menu=menuFile)
+menuFile.add_command(label="导入语料库",command=library)
+menuFile.add_command(label="导入单词",command=words)
 
-
+window.config(menu=mainmenu)
+window.bind('Button-3',popupmenu)
 window.mainloop()
 
 if __name__ == "__main__":
