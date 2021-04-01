@@ -6,13 +6,14 @@ from tkinter import filedialog,scrolledtext, messagebox
 from tkinter import *
 import os
 
-questionfile = open(r"./questions.txt","r+",encoding='utf-8')
+
 answerlist = []
 n = 1
 
+
 window = Tk()
 window.title("Forformer")
-window.geometry('1382x1047')
+window.geometry('1000x700')
 library = None
 lines = None
 questionfile = None
@@ -24,11 +25,31 @@ def main():
 
 def exportquestion():
     global questionfile
-    print(txt.get())
+    global txt
+    txtline = txt.get('1.0','end').replace('\n','')
+    print(txtline)
     file0 = filedialog.askopenfilenames(initialdir=os.path.dirname(__file__))
     questionfile = open("".join(file0),"r+",encoding='utf-8')
-    questionfile.write(txt.get())
+    questionfile.write(txtline)
     questionfile.close
+
+def fastsearchX():
+    global library
+    fastsearch(library)
+
+
+def fastsearch(library):
+    wordslist = []
+    for eachline in lines:
+        while True:
+                if eachline.find(',') != -1:
+                    wordslist.append(eachline[:eachline.find(',')].replace('\n',''))
+                    eachline =eachline[eachline.find(',') + 1:]
+                else:
+                    wordslist.append(eachline.replace('\n',''))
+                    break
+    print(wordslist)
+
 
 def library():
     global library
@@ -49,6 +70,8 @@ def words():
 def getwordsfromtext():
     newlines = txtworld.get()
 
+# def fastsearch(library):
+#     for eachline in lines:
 
 
 def printquestion(lines,library):
@@ -110,16 +133,19 @@ txt = scrolledtext.ScrolledText(window, width=80, height=50)
 txt.place(x=20,y=20)
 
 txtworld = scrolledtext.ScrolledText(window, width=40, height=50)
-txtworld.place(x=970,y=20)
+txtworld.place(x=700,y=20)
+
+btn = Button(window, text="debug", command=fastsearchX)
+btn.place(x=600,y=70)
 
 btn = Button(window, text="导入句库", command=library)
-btn.place(x=850,y=20)
+btn.place(x=600,y=20)
 
 btg = Button(window, text="生成", command=process)
-btg.place(x=850,y=970)
+btg.place(x=600,y=630)
 
 btg = Button(window, text="导入词库", command=words)
-btg.place(x=850,y=70)
+btg.place(x=600,y=50)
 
 mainmenu.add_cascade(label="文件",menu=menuFile)
 menuFile.add_command(label="导入语料库",command=library)
